@@ -14,20 +14,31 @@ function Registro({ recargarAhora }) {
     setClaveRegistro(evento.target.value)
   }
 
-
   async function registrar() {
-    const peticion = await fetch('http://localhost:3000/registro?usuario=' + usuarioRegistro + '&clave=' + claveRegistro, { credentials: 'include' })
-    if (peticion.ok) {
-      alert("Usuario registrado")
-      recargarAhora()
-    } else {
-      alert('Usuario no registrado')
+    try {
+      const peticion = await fetch('/registrar', {  // Cambia la URL a tu backend
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          usuario: usuarioRegistro,
+          clave: claveRegistro,
+        }),
+      });
+      if (peticion.ok) {
+        alert('Usuario registrado');
+      } else {
+        alert('Error al registrar el usuario');
+      }
+    } catch (error) {
+      console.error('Error al registrar el usuario:', error);
+      alert('Hubo un problema al registrar el usuario.');
     }
   }
 
   useEffect(() => {
   }, [])
-
 
   return (
     <>
@@ -39,4 +50,4 @@ function Registro({ recargarAhora }) {
   )
 }
 
-export default Registro
+export default Registro;
