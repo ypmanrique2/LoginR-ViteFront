@@ -6,7 +6,7 @@ function Usuarios({ recargar }) {
   const [usuarios, setUsuarios] = useState([])
 
   async function obtenerUsuarios() {
-    const peticion = await fetch('http://localhost:3000/usuarios', { credentials: 'include' })
+    const peticion = await fetch('https://loginexpress-1-8pdh.onrender.com/usuarios', { credentials: 'include' })
     if (peticion.ok) {
       const respuesta = await peticion.json()
       setUsuarios(respuesta)
@@ -14,13 +14,12 @@ function Usuarios({ recargar }) {
   }
 
   async function eliminarUsuario(id) {
-    const peticion = await fetch('http://localhost:3000/usuarios?id=' + id, { credentials: 'include', method: 'DELETE' })
+    const peticion = await fetch('https://loginexpress-1-8pdh.onrender.com/usuarios?id=' + id, { credentials: 'include', method: 'DELETE' })
     if (peticion.ok) {
       alert('Usuario eliminado')
       obtenerUsuarios();
     }
   }
-
 
   useEffect(() => {
     obtenerUsuarios()
@@ -34,8 +33,7 @@ function Usuarios({ recargar }) {
           <tr>
             <th>Id</th>
             <th>Usuario</th>
-            <th>Clave</th>
-            <th>Opciones</th>
+            <th>Rol</th>
           </tr>
         </thead>
         <tbody>
@@ -44,7 +42,7 @@ function Usuarios({ recargar }) {
               <tr key={usuario.id}>
                 <th>{usuario.id}</th>
                 <th>{usuario.usuario}</th>
-                <th>{usuario.clave}</th>
+                <th>{usuario.rol}</th>
                 <th>
                   <button
                     onClick={() => { eliminarUsuario(usuario.id) }}

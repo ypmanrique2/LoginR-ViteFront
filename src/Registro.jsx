@@ -3,7 +3,6 @@ import React, { useState } from "react";
 const Registro = ({ recargarAhora }) => {
   const [usuarioRegistro, setUsuarioRegistro] = useState('');
   const [claveRegistro, setClaveRegistro] = useState('');
-  const [registroExitoso, setRegistroExitoso] = useState(false);
 
   const registrar = async () => {
     try {
@@ -17,7 +16,6 @@ const Registro = ({ recargarAhora }) => {
       });
 
       if (peticion.ok) {
-        setRegistroExitoso(true);
         alert('Usuario registrado');
         recargarAhora();  // Actualizar la lista de usuarios después del registro
       } else {
@@ -31,25 +29,23 @@ const Registro = ({ recargarAhora }) => {
   return (
     <div>
       <h2>Registro de Usuario</h2>
-      {!registroExitoso && (
-        <form>
-          <input
-            type="text"
-            value={usuarioRegistro}
-            onChange={(e) => setUsuarioRegistro(e.target.value)}
-            placeholder="Nombre de usuario"
-          />
-          <input
-            type="password"
-            value={claveRegistro}
-            onChange={(e) => setClaveRegistro(e.target.value)}
-            placeholder="Contraseña"
-          />
-          <button type="button" onClick={registrar}>
-            Registrar
-          </button>
-        </form>
-      )}
+      <form>
+        <input
+          type="text"
+          value={usuarioRegistro}
+          onChange={(e) => setUsuarioRegistro(e.target.value)}
+          placeholder="Nombre de usuario"
+        />
+        <input
+          type="password"
+          value={claveRegistro}
+          onChange={(e) => setClaveRegistro(e.target.value)}
+          placeholder="Contraseña"
+        />
+        <button type="button" onClick={registrar}>
+          Registrar
+        </button>
+      </form>
     </div>
   );
 };

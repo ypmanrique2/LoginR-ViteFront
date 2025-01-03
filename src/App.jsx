@@ -7,19 +7,9 @@ import Registro from './Registro';
 function App() {
   const [usuario, setUsuario] = useState('');
   const [clave, setClave] = useState('');
-  const [usuarioRegistro, setUsuarioRegistro] = useState('');
-  const [claveRegistro, setClaveRegistro] = useState('');
   const [logueado, setLogueado] = useState(false);
   const [usuarios, setUsuarios] = useState([]);
   const [rol, setRol] = useState('');
-
-  function cambiarUsuarioRegistro(evento) {
-    setUsuarioRegistro(evento.target.value);
-  }
-
-  function cambiarClaveRegistro(evento) {
-    setClaveRegistro(evento.target.value);
-  }
 
   function cambiarUsuario(evento) {
     setUsuario(evento.target.value);
