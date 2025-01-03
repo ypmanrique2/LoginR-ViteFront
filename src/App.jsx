@@ -69,7 +69,7 @@ function App() {
 
   async function registrar() {
     try {
-      const peticion = await fetch('http://localhost:10000/registrar' || 'http://localhost:3000/registrar' || 'https://loginexpress-1-8pdh.onrender.com/registrar', {
+      const peticion = await fetch('https://loginexpress-1-8pdh.onrender.com/registrar', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

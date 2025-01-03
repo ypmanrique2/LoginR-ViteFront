@@ -16,24 +16,24 @@ function Registro({ recargarAhora }) {
 
   async function registrar() {
     try {
-      const peticion = await fetch('/registrar', {  // Cambia la URL a tu backend
+      const peticion = await fetch('https://loginexpress-1-8pdh.onrender.com/registrar', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          usuario: usuarioRegistro,
-          clave: claveRegistro,
+          usuario: usuarioRegistro,  // Asegúrate de que esta variable contenga el valor correcto
+          clave: claveRegistro,      // Lo mismo para esta variable
         }),
       });
+  
       if (peticion.ok) {
         alert('Usuario registrado');
       } else {
         alert('Error al registrar el usuario');
       }
     } catch (error) {
-      console.error('Error al registrar el usuario:', error);
-      alert('Hubo un problema al registrar el usuario.');
+      console.error('Error en el registro:', error);
     }
   }
 
