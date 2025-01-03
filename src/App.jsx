@@ -31,12 +31,12 @@ function App() {
 
   async function ingresar(event) {
     event.preventDefault(); // Evita que el formulario recargue la página
-  
+
     try {
-      const BASE_URL = process.env.NODE_ENV === 'production' 
+      const BASE_URL = process.env.NODE_ENV === 'production'
         ? 'https://loginexpress-1-8pdh.onrender.com'
-        : 'http://localhost:10000';  
-  
+        : 'http://localhost:10000';
+
       const peticion = await fetch(`${BASE_URL}/login`, {
         method: 'POST',
         headers: {
@@ -48,11 +48,12 @@ function App() {
         }),
         credentials: 'include',
       });
-      
+
       if (peticion.ok) {
         const datos = await peticion.json();
         if (datos.rol === 'ADMINISTRADOR') {
           setRol('ADMINISTRADOR');
+          obtenerUsuarios();
         } else {
           setRol('USUARIO');
         }
@@ -79,7 +80,7 @@ function App() {
           clave: claveRegistro,      // Lo mismo para esta variable
         }),
       });
-  
+
       if (peticion.ok) {
         alert('Usuario registrado');
       } else {
@@ -120,6 +121,7 @@ function App() {
     return (
       <>
         <Registro recargarAhora={() => setUsuarios([])} />
+        <Registro recargarAhora={obtenerUsuarios} />
         <Conversor />
         <Usuarios recargar={() => obtenerUsuarios()} />
       </>
@@ -127,25 +129,25 @@ function App() {
   }
 
   return (
-<form onSubmit={ingresar}>
-  <input
-    placeholder="Usuario"
-    type="text"
-    name="usuario"
-    id="usuario"
-    value={usuario}
-    onChange={cambiarUsuario}
-  />
-  <input
-    placeholder="Clave"
-    type="password"
-    name="clave"
-    id="clave"
-    value={clave}
-    onChange={cambiarClave}
-  />
-  <button type="submit">Ingresar</button>
-</form>
+    <form onSubmit={ingresar}>
+      <input
+        placeholder="Usuario"
+        type="text"
+        name="usuario"
+        id="usuario"
+        value={usuario}
+        onChange={cambiarUsuario}
+      />
+      <input
+        placeholder="Clave"
+        type="password"
+        name="clave"
+        id="clave"
+        value={clave}
+        onChange={cambiarClave}
+      />
+      <button type="submit">Ingresar</button>
+    </form>
   );
 }
 

@@ -22,13 +22,14 @@ function Registro({ recargarAhora }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          usuario: usuarioRegistro,  // Asegúrate de que esta variable contenga el valor correcto
-          clave: claveRegistro,      // Lo mismo para esta variable
+          usuario: usuarioRegistro,
+          clave: claveRegistro,
         }),
       });
-  
+
       if (peticion.ok) {
         alert('Usuario registrado');
+        recargarAhora();  // Esto actualizará la lista de usuarios
       } else {
         alert('Error al registrar el usuario');
       }
