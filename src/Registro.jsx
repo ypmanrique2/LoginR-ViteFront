@@ -25,11 +25,11 @@ function Registro({ recargarAhora }) {
           usuario: usuarioRegistro,
           clave: claveRegistro,
         }),
+        credentials: 'include', // Asegura que las cookies de sesión se envíen
       });
-
+  
       if (peticion.ok) {
         alert('Usuario registrado');
-        recargarAhora();  // Esto actualizará la lista de usuarios
       } else {
         alert('Error al registrar el usuario');
       }
