@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-const Registro = () => {
+const Registro = ({ recargarAhora }) => {
   const [usuarioRegistro, setUsuarioRegistro] = useState('');
   const [claveRegistro, setClaveRegistro] = useState('');
   const [registroExitoso, setRegistroExitoso] = useState(false);
-  const [usuarios, setUsuarios] = useState([]);
 
   const registrar = async () => {
     try {
@@ -20,45 +19,13 @@ const Registro = () => {
       if (peticion.ok) {
         setRegistroExitoso(true);
         alert('Usuario registrado');
-        obtenerUsuarios();  // Actualizar la lista de usuarios después del registro
+        recargarAhora();  // Actualizar la lista de usuarios después del registro
       } else {
         alert('Error al registrar el usuario');
       }
     } catch (error) {
       console.error('Error en el registro:', error);
     }
-  };
-
-  // Obtener la lista de usuarios
-  const obtenerUsuarios = async () => {
-    try {
-      const response = await fetch('https://loginexpress-1-8pdh.onrender.com/usuarios', {
-        method: 'GET',
-        credentials: 'include', // Enviar cookies si las hay
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setUsuarios(data);
-      } else {
-        console.log('No se pudo obtener la lista de usuarios');
-      }
-    } catch (error) {
-      console.error('Error al obtener los usuarios:', error);
-    }
-  };
-
-  // Solo mostrar la lista de usuarios si el usuario es un administrador
-  const mostrarUsuariosParaAdmin = () => {
-    return (
-      <div>
-        <h3>Lista de Usuarios</h3>
-        <ul>
-          {usuarios.map((usuario, index) => (
-            <li key={index}>{usuario.usuario}</li>
-          ))}
-        </ul>
-      </div>
-    );
   };
 
   return (
@@ -83,7 +50,6 @@ const Registro = () => {
           </button>
         </form>
       )}
-      {registroExitoso && mostrarUsuariosParaAdmin()}
     </div>
   );
 };

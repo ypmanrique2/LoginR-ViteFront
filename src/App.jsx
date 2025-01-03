@@ -58,36 +58,12 @@ function App() {
           setRol('USUARIO');
         }
         setLogueado(true);
-        obtenerUsuarios();
       } else {
         alert('Usuario o clave incorrectos');
       }
     } catch (error) {
       console.error('Error al intentar ingresar:', error);
       alert('Hubo un problema al iniciar sesión.');
-    }
-  }
-
-  async function registrar() {
-    try {
-      const peticion = await fetch('https://loginexpress-1-8pdh.onrender.com/registrar', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          usuario: usuarioRegistro,  // Asegúrate de que esta variable contenga el valor correcto
-          clave: claveRegistro,      // Lo mismo para esta variable
-        }),
-      });
-
-      if (peticion.ok) {
-        alert('Usuario registrado');
-      } else {
-        alert('Error al registrar el usuario');
-      }
-    } catch (error) {
-      console.error('Error en el registro:', error);
     }
   }
 
@@ -114,40 +90,49 @@ function App() {
     const peticion = await fetch('/usuarios?id=' + id, { credentials: 'include', method: 'DELETE' });
     if (peticion.ok) {
       alert('Usuario eliminado');
+      obtenerUsuarios(); // Actualiza la lista después de eliminar
     }
   }
 
   if (logueado) {
     return (
       <>
-        <Registro recargarAhora={() => setUsuarios([])} />
-        <Registro recargarAhora={obtenerUsuarios} />
         <Conversor />
-        <Usuarios recargar={() => obtenerUsuarios()} />
+        {rol === 'ADMINISTRADOR' && (
+          <>
+            <h2>Lista de Usuarios</h2>
+            <Usuarios usuarios={usuarios} eliminarUsuario={eliminarUsuario} />
+            <Registro recargarAhora={obtenerUsuarios} />
+          </>
+        )}
       </>
     );
   }
 
   return (
-    <form onSubmit={ingresar}>
-      <input
-        placeholder="Usuario"
-        type="text"
-        name="usuario"
-        id="usuario"
-        value={usuario}
-        onChange={cambiarUsuario}
-      />
-      <input
-        placeholder="Clave"
-        type="password"
-        name="clave"
-        id="clave"
-        value={clave}
-        onChange={cambiarClave}
-      />
-      <button type="submit">Ingresar</button>
-    </form>
+    <div>
+      <h2>Login</h2>
+      <form onSubmit={ingresar}>
+        <input
+          placeholder="Usuario"
+          type="text"
+          name="usuario"
+          id="usuario"
+          value={usuario}
+          onChange={cambiarUsuario}
+        />
+        <input
+          placeholder="Clave"
+          type="password"
+          name="clave"
+          id="clave"
+          value={clave}
+          onChange={cambiarClave}
+        />
+        <button type="submit">Ingresar</button>
+      </form>
+      <Registro recargarAhora={obtenerUsuarios} />
+    </div>
   );
 }
 
