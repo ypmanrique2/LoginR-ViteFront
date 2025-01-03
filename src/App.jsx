@@ -31,22 +31,22 @@ function App() {
 
   async function ingresar(event) {
     event.preventDefault(); // Evita que el formulario recargue la página
-
+  
     try {
       const BASE_URL = process.env.NODE_ENV === 'production' 
-      ? 'https://loginexpress-1-8pdh.onrender.com'  // URL de tu backend en producción
-      : 'http://localhost:10000';  // URL de tu backend en desarrollo
-
+        ? 'https://loginexpress-1-8pdh.onrender.com'
+        : 'http://localhost:10000';  
+  
       const peticion = await fetch(`${BASE_URL}/login`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    usuario: usuario,
-    clave: clave,
-  }),
-        credentials: 'include',  // Mantener la cookie de sesión
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          usuario: usuario,
+          clave: clave,
+        }),
+        credentials: 'include',
       });
       
       if (peticion.ok) {
