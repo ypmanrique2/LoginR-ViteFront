@@ -25,7 +25,7 @@ function App() {
     try {
       const BASE_URL = process.env.NODE_ENV === 'production'
         ? 'https://loginexpress-1-8pdh.onrender.com'
-        : 'http://localhost:12655';
+        : 'http://localhost:10000';
 
       const peticion = await fetch(`${BASE_URL}/login`, {
         method: 'POST',
