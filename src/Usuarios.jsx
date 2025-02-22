@@ -19,11 +19,9 @@ function Usuarios() {
                 console.log('Respuesta del servidor:', respuesta); // Agrega esto para depuración
     
                 if (respuesta.ok) {
-                    setUsuarios([]); // Limpiar la lista antes de actualizarla
                     const data = await respuesta.json();
-                    setUsuarios(data.usuarios); // Si la respuesta tiene la propiedad "usuarios"
                     console.log('Usuarios recibidos:', data); // Verifica la respuesta
-                    setUsuarios(data);
+                    setUsuarios(data.usuarios || []); // Asegúrate de que existe `data.usuarios` o es un array vacío
                 } else {
                     console.error('Error al obtener usuarios:', respuesta.status);
                 }
