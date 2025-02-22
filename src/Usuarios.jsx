@@ -8,8 +8,8 @@ function Usuarios() {
     const [edicionUsuario, setEdicionUsuario] = useState({});
 
     const BASE_URL = process.env.NODE_ENV === 'production'
-        ? 'https://loginexpress-1-8pdh.onrender.com'
-        : 'https://loginreactconversorexpressback.onrender.com';
+        ? 'https://conversorreactback.onrender.com'
+        : 'http://localhost:10000';
 
     // Obtener usuarios de la base de datos
     useEffect(() => {
@@ -34,7 +34,7 @@ function Usuarios() {
 
     async function cambiarRol(id, nuevoRol) {
         try {
-            const response = await fetch(`http://localhost:3000/usuario/${id}/rol`, {
+            const response = await fetch(`http://localhost:1000/usuario/${id}/rol`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
