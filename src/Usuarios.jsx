@@ -9,18 +9,23 @@ function Usuarios() {
 
     const BASE_URL = process.env.NODE_ENV === 'production'
         ? 'https://loginexpress-1-8pdh.onrender.com'
-        : 'http://localhost:3000';
+        : 'https://loginreactconversorexpressback.onrender.com';
 
     // Obtener usuarios de la base de datos
     useEffect(() => {
         async function obtenerUsuarios() {
             try {
                 const respuesta = await fetch(`${BASE_URL}/usuarios`, { credentials: 'include' });
+                console.log('Respuesta del servidor:', respuesta); // Agrega esto para depuración
+    
                 if (respuesta.ok) {
+                    setUsuarios([]); // Limpiar la lista antes de actualizarla
                     const data = await respuesta.json();
+                    setUsuarios(data.usuarios); // Si la respuesta tiene la propiedad "usuarios"
+                    console.log('Usuarios recibidos:', data); // Verifica la respuesta
                     setUsuarios(data);
                 } else {
-                    console.error('Error al obtener usuarios');
+                    console.error('Error al obtener usuarios:', respuesta.status);
                 }
             } catch (error) {
                 console.error('Error:', error);
