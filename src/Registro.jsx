@@ -8,7 +8,7 @@ function Registro({ recargarAhora, esAdmin }) {
     async function registrar(event) {
         event.preventDefault();
         const body = esAdmin ? { usuario, clave, rol } : { usuario, clave }; // Solo los ADMIN envían rol
-
+    
         try {
             const respuesta = await fetch('https://conversorreactback.onrender.com/register', {
                 method: 'POST',
@@ -16,7 +16,7 @@ function Registro({ recargarAhora, esAdmin }) {
                 body: JSON.stringify(body),
                 credentials: 'include',
             });
-
+    
             if (respuesta.ok) {
                 alert('Usuario registrado');
                 setUsuario('');
@@ -24,10 +24,13 @@ function Registro({ recargarAhora, esAdmin }) {
                 setRol('USUARIO'); // Resetear a USUARIO por defecto
                 recargarAhora();
             } else {
+                const errorData = await respuesta.json();  // Esto obtiene la respuesta del error
+                console.error('Error al registrar usuario:', errorData);
                 alert('Error al registrar usuario');
             }
         } catch (error) {
             console.error('Error:', error);
+            alert('Ocurrió un error al intentar registrar el usuario');
         }
     }
 
