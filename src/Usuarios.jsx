@@ -2,35 +2,18 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import { FaTrash, FaEdit } from 'react-icons/fa';
 
-function Usuarios() {
-    const [usuarios, setUsuarios] = useState([]);
-    const [cambioRol, setCambioRol] = useState({});
+function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
+    const [usuariosState, setUsuariosState] = useState(usuarios);
     const [edicionUsuario, setEdicionUsuario] = useState({});
+    const [cambioRol, setCambioRol] = useState({});
 
     const BASE_URL = process.env.NODE_ENV === 'production'
         ? 'https://conversorreactback.onrender.com'
         : 'http://localhost:10000';
 
-    // Obtener usuarios de la base de datos
     useEffect(() => {
-        async function obtenerUsuarios() {
-            try {
-                const respuesta = await fetch(`${BASE_URL}/usuarios`, { credentials: 'include' });
-                console.log('Respuesta del servidor:', respuesta); // Agrega esto para depuración
-    
-                if (respuesta.ok) {
-                    const data = await respuesta.json();
-                    console.log('Usuarios recibidos:', data); // Verifica la respuesta
-                    setUsuarios(data.usuarios || []); // Asegúrate de que existe `data.usuarios` o es un array vacío
-                } else {
-                    console.error('Error al obtener usuarios:', respuesta.status);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-        obtenerUsuarios();
-    }, []);
+        setUsuariosState(usuarios);
+    }, [usuarios]);
 
     async function cambiarRol(id, nuevoRol) {
         try {
@@ -41,40 +24,17 @@ function Usuarios() {
                 },
                 body: JSON.stringify({ rol: nuevoRol }),
             });
-    
+
             if (!response.ok) {
                 throw new Error(`Error al cambiar el rol: ${response.statusText}`);
             }
-    
+
             const data = await response.json();
             console.log("Rol actualizado:", data);
-            cargarUsuarios(); // Asegurar que la lista se actualice
+            recargarUsuarios(); // Recarga la lista de usuarios después de actualizar el rol
         } catch (error) {
             console.error("Error en cambiarRol:", error);
         }
-    }
-
-    async function eliminarUsuario(id) {
-        try {
-            const respuesta = await fetch(`${BASE_URL}/usuarios?id=` + id, {
-                method: 'DELETE',
-                credentials: 'include',
-            });
-
-            if (respuesta.ok) {
-                alert('Usuario eliminado');
-                setUsuarios(usuarios.filter((user) => user.id !== id));
-            } else {
-                alert('Error al eliminar el usuario');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-
-    function habilitarEdicion(id, usuarioActual) {
-        console.log("Editando usuario con ID:", id, usuarioActual);
-        setEdicionUsuario({ ...edicionUsuario, [id]: usuarioActual.usuario }); // Asegurar que solo almacena el string
     }
 
     async function guardarEdicion(id) {
@@ -89,17 +49,21 @@ function Usuarios() {
             const respuesta = await fetch(`${BASE_URL}/usuario/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ usuario: nuevoUsuario, clave: '123456' }), // Clave por defecto o pedirla
+                body: JSON.stringify({ usuario: nuevoUsuario, clave: '123456' }), // Usar una clave adecuada
                 credentials: 'include',
             });
 
             if (respuesta.ok) {
-                setUsuarios((prevUsuarios) =>
+                setUsuariosState((prevUsuarios) =>
                     prevUsuarios.map((user) =>
                         user.id === id ? { ...user, usuario: nuevoUsuario } : user
                     )
                 );
-                setEdicionUsuario({ ...edicionUsuario, [id]: null });
+                setEdicionUsuario((prev) => {
+                    const newState = { ...prev };
+                    delete newState[id];
+                    return newState;
+                });
                 alert("Usuario actualizado exitosamente");
             } else {
                 alert('Error al actualizar el usuario');
@@ -122,15 +86,15 @@ function Usuarios() {
                     </tr>
                 </thead>
                 <tbody>
-                    {usuarios.length > 0 ? (
-                        usuarios.map((usuario) => (
+                    {usuariosState.length > 0 ? (
+                        usuariosState.map((usuario) => (
                             <tr key={usuario.id}>
                                 <td>{usuario.id}</td>
                                 <td>
                                     {edicionUsuario[usuario.id] !== undefined ? (
                                         <input
                                             type="text"
-                                            value={edicionUsuario[usuario.id] ?? usuario.usuario} // Asegurar que siempre sea un string
+                                            value={edicionUsuario[usuario.id]}
                                             onChange={(e) =>
                                                 setEdicionUsuario({
                                                     ...edicionUsuario,
@@ -158,7 +122,7 @@ function Usuarios() {
                                     {edicionUsuario[usuario.id] !== undefined ? (
                                         <button onClick={() => guardarEdicion(usuario.id)}>✅</button>
                                     ) : (
-                                        <button onClick={() => habilitarEdicion(usuario.id, usuario)}>✏️</button>
+                                        <button onClick={() => setEdicionUsuario({ ...edicionUsuario, [usuario.id]: usuario.usuario })}>✏️</button>
                                     )}
                                 </td>
                             </tr>

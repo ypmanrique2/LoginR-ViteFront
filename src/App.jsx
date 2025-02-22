@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import Conversor from './Conversor';
 import Usuarios from './Usuarios';
@@ -109,7 +108,7 @@ function App() {
                     {rol === 'ADMINISTRADOR' && (
                         <>
                             <h2>Lista de Usuarios</h2>
-                            <Usuarios usuarios={usuarios} eliminarUsuario={eliminarUsuario} />
+                            <Usuarios usuarios={usuarios} eliminarUsuario={eliminarUsuario} recargarUsuarios={obtenerUsuarios} />
                             <Registro recargarAhora={obtenerUsuarios} esAdmin={true} />
                         </>
                     )}
