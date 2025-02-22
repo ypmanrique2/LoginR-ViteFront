@@ -10,7 +10,7 @@ function Registro({ recargarAhora, esAdmin }) {
         const body = esAdmin ? { usuario, clave, rol } : { usuario, clave }; // Solo los ADMIN envían rol
 
         try {
-            const respuesta = await fetch('http://localhost:3000/register', {
+            const respuesta = await fetch('https://conversorreactback.onrender.com/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body),

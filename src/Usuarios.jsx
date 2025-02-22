@@ -34,7 +34,7 @@ function Usuarios() {
 
     async function cambiarRol(id, nuevoRol) {
         try {
-            const response = await fetch(`http://localhost:1000/usuario/${id}/rol`, {
+            const response = await fetch(`https://conversorreactback.onrender.com/usuario/${id}/rol`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
