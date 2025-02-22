@@ -11,9 +11,7 @@ function App() {
     const [usuarios, setUsuarios] = useState([]);
     const [rol, setRol] = useState('');
 
-    const BASE_URL = process.env.NODE_ENV === 'production'
-        ? 'https://loginreactconversorexpressback.onrender.com'
-        : 'http://localhost:10000';
+    const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:10000';
 
     async function ingresar(event) {
         event.preventDefault();
@@ -40,9 +38,16 @@ function App() {
     }
 
     async function obtenerUsuarios() {
-        const peticion = await fetch(`${BASE_URL}/usuarios`, { credentials: 'include' });
-        if (peticion.ok) {
-            setUsuarios(await peticion.json());
+        try {
+            const peticion = await fetch(`${BASE_URL}/usuarios`, { credentials: 'include' });
+            if (peticion.ok) {
+                setUsuarios(await peticion.json());
+            } else {
+                alert('Error al obtener usuarios');
+            }
+        } catch (error) {
+            console.error('Error al obtener usuarios:', error);
+            alert('Hubo un problema al obtener los usuarios.');
         }
     }
 
@@ -79,7 +84,7 @@ function App() {
     return (
         <main className="container">
             <img width="50" src="https://img.freepik.com/vector-gratis/vector-degradado-logotipo-colorido-pajaro_343694-1365.jpg" alt="Logo" />
-    
+
             {!logueado ? (
                 <section>
                     <h1>Conversor TTS y STT</h1>
