@@ -12,7 +12,7 @@ function App() {
     const [usuarios, setUsuarios] = useState([]);
     const [rol, setRol] = useState('');
 
-    const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:10000';
+    const BASE_URL = process.env.REACT_APP_BASE_URL || 'https://loginreactconversorexpressback.onrender.com';
 
     async function ingresar(event) {
         event.preventDefault();
