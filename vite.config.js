@@ -3,13 +3,8 @@ import react from '@vitejs/plugin-react-swc'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
   server: {
-    proxy: {
-      '/login': 'https://loginexpress-1-8pdh.onrender.com',
-      '/validar': 'https://loginexpress-1-8pdh.onrender.com',
-      '/usuarios': 'https://loginexpress-1-8pdh.onrender.com',
-      '/registrar': 'https://loginexpress-1-8pdh.onrender.com',
-    },
+    port: process.env.PORT || 4173,  // Usar el puerto asignado por Render
+    host: true  // Asegurarse de que se pueda acceder desde fuera
   }
 });

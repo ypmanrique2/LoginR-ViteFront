@@ -1,53 +1,51 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 
-const Registro = ({ recargarAhora }) => {
-  const [usuarioRegistro, setUsuarioRegistro] = useState('');
-  const [claveRegistro, setClaveRegistro] = useState('');
+function Registro({ recargarAhora, esAdmin }) {
+    const [usuario, setUsuario] = useState('');
+    const [clave, setClave] = useState('');
+    const [rol, setRol] = useState('USUARIO'); // Por defecto, todos son USUARIO
 
-  const registrar = async () => {
-    try {
-      const peticion = await fetch('https://loginexpress-1-8pdh.onrender.com/registrar', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ usuario: usuarioRegistro, clave: claveRegistro }),
-        credentials: 'include',
-      });
+    async function registrar(event) {
+        event.preventDefault();
+        const body = esAdmin ? { usuario, clave, rol } : { usuario, clave }; // Solo los ADMIN envían rol
 
-      if (peticion.ok) {
-        alert('Usuario registrado');
-        recargarAhora();  // Actualizar la lista de usuarios después del registro
-      } else {
-        alert('Error al registrar el usuario');
-      }
-    } catch (error) {
-      console.error('Error en el registro:', error);
+        try {
+            const respuesta = await fetch('http://localhost:3000/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+                credentials: 'include',
+            });
+
+            if (respuesta.ok) {
+                alert('Usuario registrado');
+                setUsuario('');
+                setClave('');
+                setRol('USUARIO'); // Resetear a USUARIO por defecto
+                recargarAhora();
+            } else {
+                alert('Error al registrar usuario');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
-  };
 
-  return (
-    <div>
-      <h2>Registro de Usuario</h2>
-      <form>
-        <input
-          type="text"
-          value={usuarioRegistro}
-          onChange={(e) => setUsuarioRegistro(e.target.value)}
-          placeholder="Nombre de usuario"
-        />
-        <input
-          type="password"
-          value={claveRegistro}
-          onChange={(e) => setClaveRegistro(e.target.value)}
-          placeholder="Contraseña"
-        />
-        <button type="button" onClick={registrar}>
-          Registrar
-        </button>
-      </form>
-    </div>
-  );
-};
+    return (
+        <form onSubmit={registrar}>
+            <input type="text" placeholder="Usuario" value={usuario} onChange={(e) => setUsuario(e.target.value)} />
+            <input type="password" placeholder="Clave" value={clave} onChange={(e) => setClave(e.target.value)} />
+            
+            {esAdmin && (
+                <select value={rol} onChange={(e) => setRol(e.target.value)}>
+                    <option value="USUARIO">Usuario</option>
+                    <option value="ADMINISTRADOR">Administrador</option>
+                </select>
+            )}
+            
+            <button type="submit">Registrar</button>
+        </form>
+    );
+}
 
 export default Registro;
