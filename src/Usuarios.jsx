@@ -17,21 +17,22 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
 
     async function cambiarRol(id, nuevoRol) {
         try {
-            const response = await fetch(`https://conversorreactback.onrender.com/usuario/${id}/rol`, {
+            const response = await fetch(`${BASE_URL}/usuario/${id}/rol`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ rol: nuevoRol }),
+                credentials: 'include',  // Asegúrate de que la autenticación esté incluida
             });
-
+    
             if (!response.ok) {
                 throw new Error(`Error al cambiar el rol: ${response.statusText}`);
             }
-
+    
             const data = await response.json();
             console.log("Rol actualizado:", data);
-            recargarUsuarios(); // Recarga la lista de usuarios después de actualizar el rol
+            recargarUsuarios();  // Recarga la lista de usuarios después de actualizar el rol
         } catch (error) {
             console.error("Error en cambiarRol:", error);
         }
