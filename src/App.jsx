@@ -85,8 +85,16 @@ function App() {
     return (
         <main className="container">
             <img width="50" src="https://img.freepik.com/vector-gratis/vector-degradado-logotipo-colorido-pajaro_343694-1365.jpg" alt="Logo" />
-
+            <label>
+                ¿Eres administrador?
+                <input
+                    type="checkbox"
+                    checked={rol === 'ADMINISTRADOR'}
+                    onChange={(e) => setRol(e.target.checked ? 'ADMINISTRADOR' : '')}
+                />
+            </label>
             {!logueado ? (
+
                 <section>
                     <h1>Conversor TTS y STT</h1>
                     <h3>Ingresar</h3>
