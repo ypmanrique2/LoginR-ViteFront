@@ -39,24 +39,25 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
 
     async function guardarEdicion(id) {
         const nuevoUsuario = edicionUsuario[id];
-
+        const nuevoRol = cambioRol[id]; // Usamos el rol actual para actualizarlo también
+    
         if (!nuevoUsuario) {
             alert("El nombre de usuario no puede estar vacío");
             return;
         }
-
+    
         try {
             const respuesta = await fetch(`${BASE_URL}/usuario/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ usuario: nuevoUsuario, clave: '123456' }), // Usar una clave adecuada
+                body: JSON.stringify({ usuario: nuevoUsuario, clave: '123456', rol: nuevoRol }), // Usamos la nueva clave
                 credentials: 'include',
             });
-
+    
             if (respuesta.ok) {
                 setUsuariosState((prevUsuarios) =>
                     prevUsuarios.map((user) =>
-                        user.id === id ? { ...user, usuario: nuevoUsuario } : user
+                        user.id === id ? { ...user, usuario: nuevoUsuario, rol: nuevoRol } : user
                     )
                 );
                 setEdicionUsuario((prev) => {
@@ -70,6 +71,26 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
             }
         } catch (error) {
             console.error('Error:', error);
+        }
+    }
+
+    async function eliminarUsuario(id) {
+        if (window.confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+            try {
+                const peticion = await fetch(`${BASE_URL}/usuario/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+    
+                if (peticion.ok) {
+                    alert('Usuario eliminado');
+                    recargarUsuarios();
+                } else {
+                    alert('Error al eliminar el usuario');
+                }
+            } catch (error) {
+                console.error('Error al eliminar el usuario:', error);
+            }
         }
     }
 
