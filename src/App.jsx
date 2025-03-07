@@ -53,7 +53,7 @@ function App() {
     }
 
     async function eliminarUsuario(id) {
-        const peticion = await fetch(`${BASE_URL}/usuarios?id=` + id, {
+        const peticion = await fetch(`${BASE_URL}/usuario/${id}`, {
             credentials: 'include',
             method: 'DELETE'
         });
