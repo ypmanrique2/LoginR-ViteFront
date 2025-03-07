@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './App.css';
 
 function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
     const BASE_URL = process.env.NODE_ENV === 'production'
@@ -21,7 +22,12 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
         setMostrarModal(false);
     };
 
-    async function actualizarUsuario() {
+    const confirmarEdicion = async () => {
+        const confirmacion = window.confirm(
+            `¿Deseas guardar los siguientes cambios?\n\nNombre: ${nuevoNombre}\nRol: ${nuevoRol}`
+        );
+        if (!confirmacion) return;
+
         const respuesta = await fetch(`${BASE_URL}/usuario/${usuarioEdit.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -30,13 +36,13 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
         });
 
         if (respuesta.ok) {
-            alert('Usuario actualizado');
+            alert('Usuario actualizado correctamente');
             recargarUsuarios();
         } else {
             alert('Error al actualizar usuario');
         }
         cerrarModal();
-    }
+    };
 
     return (
         <div>
@@ -83,12 +89,18 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
                             <option value="USUARIO">USUARIO</option>
                         </select>
                     </label>
-                    <button onClick={actualizarUsuario}>Confirmar</button>
+                    <button onClick={confirmarEdicion}>Confirmar</button>
                     <button onClick={cerrarModal}>Cancelar</button>
                 </div>
             )}
         </div>
     );
 }
+
+{logueado && (
+    <button style={{ position: "absolute", top: 10, right: 10 }} onClick={cerrarSesion}>
+        Cerrar Sesión
+    </button>
+)}
 
 export default Usuarios;

@@ -8,3 +8,9 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>,
 )
+
+{logueado && (
+  <button style={{ position: "absolute", top: 10, right: 10 }} onClick={cerrarSesion}>
+      Cerrar Sesión
+  </button>
+)}

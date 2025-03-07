@@ -70,6 +70,7 @@ function App() {
         });
         setLogueado(false);
         setRol('');
+        setUsuarios([]); // Asegura que la lista de usuarios se limpie
     }
 
     return (
