@@ -9,26 +9,30 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
     const [usuarioEdit, setUsuarioEdit] = useState(null);
     const [nuevoNombre, setNuevoNombre] = useState('');
     const [nuevoRol, setNuevoRol] = useState('');
-    const [mostrarModal, setMostrarModal] = useState(false);
+    const [editandoId, setEditandoId] = useState(null);
 
-    const abrirModal = (usuario) => {
-        setUsuarioEdit(usuario);
+    const iniciarEdicion = (usuario) => {
+        setEditandoId(usuario.id);
         setNuevoNombre(usuario.nombre);
         setNuevoRol(usuario.rol);
-        setMostrarModal(true);
     };
 
-    const cerrarModal = () => {
-        setMostrarModal(false);
+    const cancelarEdicion = () => {
+        setEditandoId(null);
     };
 
     const confirmarEdicion = async () => {
+        if (!nuevoNombre.trim() || !nuevoRol) {
+            alert("Por favor, complete todos los campos antes de confirmar.");
+            return;
+        }
+
         const confirmacion = window.confirm(
             `¿Deseas guardar los siguientes cambios?\n\nNombre: ${nuevoNombre}\nRol: ${nuevoRol}`
         );
         if (!confirmacion) return;
 
-        const respuesta = await fetch(`${BASE_URL}/usuario/${usuarioEdit.id}`, {
+        const respuesta = await fetch(`${BASE_URL}/usuario/${editandoId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -41,7 +45,7 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
         } else {
             alert('Error al actualizar usuario');
         }
-        cerrarModal();
+        cancelarEdicion();
     };
 
     return (
@@ -62,37 +66,44 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
                         <tr key={user.id}>
                             <td>{user.id}</td>
                             <td>{user.usuario}</td>
-                            <td>{user.nombre}</td>
-                            <td>{user.rol}</td>
                             <td>
-                                <button onClick={() => abrirModal(user)}>✏️ Editar</button>
-                                <button onClick={() => eliminarUsuario(user.id)}>🗑️ Eliminar</button>
+                                {editandoId === user.id ? (
+                                    <input
+                                        type="text"
+                                        value={nuevoNombre}
+                                        onChange={(e) => setNuevoNombre(e.target.value)}
+                                    />
+                                ) : (
+                                    user.nombre
+                                )}
+                            </td>
+                            <td>
+                                {editandoId === user.id ? (
+                                    <select value={nuevoRol} onChange={(e) => setNuevoRol(e.target.value)}>
+                                        <option value="ADMINISTRADOR">ADMINISTRADOR</option>
+                                        <option value="USUARIO">USUARIO</option>
+                                    </select>
+                                ) : (
+                                    user.rol
+                                )}
+                            </td>
+                            <td>
+                                {editandoId === user.id ? (
+                                    <>
+                                        <button style={{ backgroundColor: 'green', color: 'white' }} onClick={confirmarEdicion}>✔️ Guardar</button>
+                                        <button onClick={cancelarEdicion}>❌ Cancelar</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <button onClick={() => iniciarEdicion(user)}>✏️ Editar</button>
+                                        <button onClick={() => eliminarUsuario(user.id)}>🗑️ Eliminar</button>
+                                    </>
+                                )}
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-
-            {mostrarModal && (
-                <div className="modal">
-                    <h3>Editar Usuario</h3>
-                    <label>Nombre:
-                        <input
-                            type="text"
-                            value={nuevoNombre}
-                            onChange={(e) => setNuevoNombre(e.target.value)}
-                        />
-                    </label>
-                    <label>Rol:
-                        <select value={nuevoRol} onChange={(e) => setNuevoRol(e.target.value)}>
-                            <option value="ADMINISTRADOR">ADMINISTRADOR</option>
-                            <option value="USUARIO">USUARIO</option>
-                        </select>
-                    </label>
-                    <button onClick={confirmarEdicion}>Confirmar</button>
-                    <button onClick={cerrarModal}>Cancelar</button>
-                </div>
-            )}
         </div>
     );
 }
