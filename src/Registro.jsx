@@ -35,7 +35,7 @@ function Registro({ recargarAhora, esAdmin }) {
             alert('Ocurrió un error al intentar registrar el usuario');
         }
     }
-    console.log("Valor de nombre:", nombre);
+
     return (
         <form onSubmit={registrar}>
             <input type="text" placeholder="Usuario" value={usuario} onChange={(e) => setUsuario(e.target.value)} />

@@ -74,7 +74,7 @@ function App() {
         setRol('');
         setUsuarios([]); // Asegura que la lista de usuarios se limpie
     }
-    console.log("Valor de nombre:", nombre);
+
     return (
         <main className="container">
             {logueado && (
