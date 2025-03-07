@@ -9,12 +9,16 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
     const [usuarioEdit, setUsuarioEdit] = useState(null);
     const [nuevoNombre, setNuevoNombre] = useState('');
     const [nuevoRol, setNuevoRol] = useState('');
+    const [nuevoUsuario, setNuevoUsuario] = useState('');
+    const [nuevaClave, setNuevaClave] = useState('');
     const [editandoId, setEditandoId] = useState(null);
 
     const iniciarEdicion = (usuario) => {
         setEditandoId(usuario.id);
         setNuevoNombre(usuario.nombre);
         setNuevoRol(usuario.rol);
+        setNuevoUsuario(usuario.usuario);
+        setNuevaClave(usuario.clave);
     };
 
     const cancelarEdicion = () => {
@@ -22,13 +26,13 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
     };
 
     const confirmarEdicion = async () => {
-        if (!nuevoNombre.trim() || !nuevoRol) {
+        if (!nuevoNombre.trim() || !nuevoRol || !nuevoUsuario.trim() || !nuevaClave.trim()) {
             alert("Por favor, complete todos los campos antes de confirmar.");
             return;
         }
 
         const confirmacion = window.confirm(
-            `¿Deseas guardar los siguientes cambios?\n\nNombre: ${nuevoNombre}\nRol: ${nuevoRol}`
+            `¿Deseas guardar los siguientes cambios?\n\nNombre: ${nuevoNombre}\nRol: ${nuevoRol}\nUsuario: ${nuevoUsuario}\nUsuario: ${nuevaClave}`
         );
         if (!confirmacion) return;
 
@@ -36,7 +40,7 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
-            body: JSON.stringify({ nombre: nuevoNombre, rol: nuevoRol })
+            body: JSON.stringify({ nombre: nuevoNombre, rol: nuevoRol, usuario: nuevoUsuario })
         });
 
         if (respuesta.ok) {
@@ -56,8 +60,9 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
                     <tr>
                         <th>ID</th>
                         <th>Usuario</th>
-                        <th>Nombre</th>
+                        <th>Clave</th>
                         <th>Rol</th>
+                        <th>Nombre</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -75,6 +80,28 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
                                     />
                                 ) : (
                                     user.nombre
+                                )}
+                            </td>
+                            <td>
+                                {editandoId === user.id ? (
+                                    <input
+                                        type="text"
+                                        value={nuevoUsuario}
+                                        onChange={(e) => setNuevoUsuario(e.target.value)}
+                                    />
+                                ) : (
+                                    user.usuario
+                                )}
+                            </td>
+                            <td>
+                                {editandoId === user.id ? (
+                                    <input
+                                        type="text"
+                                        value={nuevaClave}
+                                        onChange={(e) => setNuevaClave(e.target.value)}
+                                    />
+                                ) : (
+                                    user.clave
                                 )}
                             </td>
                             <td>
