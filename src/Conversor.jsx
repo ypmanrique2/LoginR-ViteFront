@@ -57,7 +57,6 @@ function Conversor() {
 
     return (
         <>
-            <h1>Conversor TTS y STT</h1>
             <br />
             <h3>Conversor de texto a voz</h3>
             <input type="text" value={textoAVoz} onChange={cambiarTexto} />

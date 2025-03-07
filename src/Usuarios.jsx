@@ -54,7 +54,6 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
 
   return (
     <div>
-      <h2>Lista de Usuarios</h2>
       <table>
         <thead>
           <tr>
