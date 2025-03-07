@@ -97,10 +97,4 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
     );
 }
 
-{logueado && (
-    <button style={{ position: "absolute", top: 10, right: 10 }} onClick={cerrarSesion}>
-        Cerrar Sesión
-    </button>
-)}
-
 export default Usuarios;
