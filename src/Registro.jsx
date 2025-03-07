@@ -40,7 +40,7 @@ function Registro({ recargarAhora, esAdmin }) {
         <form onSubmit={registrar}>
             <input type="text" placeholder="Usuario" value={usuario} onChange={(e) => setUsuario(e.target.value)} />
             <input type="password" placeholder="Clave" value={clave} onChange={(e) => setClave(e.target.value)} />
-            <input type="text" placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} style={{ border: '2px solid red' }} />
+            <input type="text" placeholder="Nombre (Opcional)" value={nombre} onChange={(e) => setNombre(e.target.value)} />
             {esAdmin && (
                 <select value={rol} onChange={(e) => setRol(e.target.value)}>
                     <option value="USUARIO">Usuario</option>

@@ -96,8 +96,6 @@ function App() {
                         </label>
                         <button type="submit">Login</button>
                     </form>
-                    <label htmlFor="nombre">Nombre</label>
-                    <input type="text" placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} style={{ border: '2px solid red' }} />
                     <h3>Registrar</h3>
                     <Registro recargarAhora={obtenerUsuarios} esAdmin={false} />
                 </section>
