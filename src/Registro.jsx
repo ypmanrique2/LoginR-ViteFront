@@ -8,7 +8,7 @@ function Registro({ recargarAhora, esAdmin }) {
 
     async function registrar(event) {
         event.preventDefault();
-        const body = esAdmin ? { usuario, clave, rol } : { usuario, clave, nombre }; // Solo los ADMIN envían rol
+        const body = esAdmin ? { usuario, clave, rol, nombre } : { usuario, clave, nombre }; // Solo los ADMIN envían rol
     
         try {
             const respuesta = await fetch('https://conversorreactback.onrender.com/register', {
