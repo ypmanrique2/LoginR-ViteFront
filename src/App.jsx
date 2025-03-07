@@ -12,7 +12,8 @@ function App() {
     const [rol, setRol] = useState('');
     const [esAdmin, setEsAdmin] = useState(false);  // Agregamos el estado para el rol de admin
 
-    const BASE_URL = process.env.REACT_APP_BASE_URL || 'https://conversorreactback.onrender.com';
+    const BASE_URL = //process.env.REACT_APP_BASE_URL || 
+    'https://conversorreactback.onrender.com';
 
     async function ingresar(event) {
         event.preventDefault();
