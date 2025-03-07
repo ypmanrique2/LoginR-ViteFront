@@ -32,7 +32,7 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
         }
 
         const confirmacion = window.confirm(
-            `¿Deseas guardar los siguientes cambios?\n\nNombre: ${nuevoNombre}\nRol: ${nuevoRol}\nUsuario: ${nuevoUsuario}\nUsuario: ${nuevaClave}`
+            `¿Deseas guardar los siguientes cambios?\n\nNombre: ${nuevoNombre}\nRol: ${nuevoRol}\nUsuario: ${nuevoUsuario}\nClave: ${nuevaClave}`
         );
         if (!confirmacion) return;
 
@@ -40,7 +40,7 @@ function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
-            body: JSON.stringify({ nombre: nuevoNombre, rol: nuevoRol, usuario: nuevoUsuario })
+            body: JSON.stringify({ nombre: nuevoNombre, rol: nuevoRol, usuario: nuevoUsuario, clave: nuevaClave })
         });
 
         if (respuesta.ok) {
