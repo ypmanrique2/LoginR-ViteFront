@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import { FaTrash, FaEdit } from 'react-icons/fa';
+import { useState } from 'react';
 
 function Usuarios({ usuarios, eliminarUsuario, recargarUsuarios }) {
     const BASE_URL = process.env.NODE_ENV === 'production'
