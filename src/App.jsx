@@ -7,13 +7,14 @@ import Registro from './Registro';
 function App() {
     const [usuario, setUsuario] = useState('');
     const [clave, setClave] = useState('');
+    const [nombre, setNombre] = useState('');
     const [logueado, setLogueado] = useState(false);
     const [usuarios, setUsuarios] = useState([]);
     const [rol, setRol] = useState('');
     const [esAdmin, setEsAdmin] = useState(false);  // Agregamos el estado para el rol de admin
 
     const BASE_URL = //process.env.REACT_APP_BASE_URL || 
-    'https://conversorreactback.onrender.com';
+        'https://conversorreactback.onrender.com';
 
     async function ingresar(event) {
         event.preventDefault();
@@ -73,7 +74,7 @@ function App() {
         setRol('');
         setUsuarios([]); // Asegura que la lista de usuarios se limpie
     }
-
+    console.log("Valor de nombre:", nombre);
     return (
         <main className="container">
             {logueado && (
@@ -95,8 +96,10 @@ function App() {
                         </label>
                         <button type="submit">Login</button>
                     </form>
+                    <label htmlFor="nombre">Nombre</label>
+                    <input type="text" placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} style={{ border: '2px solid red' }} />
                     <h3>Registrar</h3>
-                    <Registro recargarAhora={obtenerUsuarios} />
+                    <Registro recargarAhora={obtenerUsuarios} esAdmin={false} />
                 </section>
             ) : (
                 <section>

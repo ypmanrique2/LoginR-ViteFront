@@ -3,11 +3,12 @@ import { useState } from 'react';
 function Registro({ recargarAhora, esAdmin }) {
     const [usuario, setUsuario] = useState('');
     const [clave, setClave] = useState('');
+    const [nombre, setNombre] = useState('');
     const [rol, setRol] = useState('USUARIO'); // Por defecto, todos son USUARIO
 
     async function registrar(event) {
         event.preventDefault();
-        const body = esAdmin ? { usuario, clave, rol } : { usuario, clave }; // Solo los ADMIN envían rol
+        const body = esAdmin ? { usuario, clave, rol } : { usuario, clave, nombre }; // Solo los ADMIN envían rol
     
         try {
             const respuesta = await fetch('https://conversorreactback.onrender.com/register', {
@@ -21,6 +22,7 @@ function Registro({ recargarAhora, esAdmin }) {
                 alert('Usuario registrado');
                 setUsuario('');
                 setClave('');
+                setNombre('');
                 setRol('USUARIO'); // Resetear a USUARIO por defecto
                 recargarAhora();
             } else {
@@ -33,12 +35,12 @@ function Registro({ recargarAhora, esAdmin }) {
             alert('Ocurrió un error al intentar registrar el usuario');
         }
     }
-
+    console.log("Valor de nombre:", nombre);
     return (
         <form onSubmit={registrar}>
             <input type="text" placeholder="Usuario" value={usuario} onChange={(e) => setUsuario(e.target.value)} />
             <input type="password" placeholder="Clave" value={clave} onChange={(e) => setClave(e.target.value)} />
-            
+            <input type="text" placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} style={{ border: '2px solid red' }} />
             {esAdmin && (
                 <select value={rol} onChange={(e) => setRol(e.target.value)}>
                     <option value="USUARIO">Usuario</option>
