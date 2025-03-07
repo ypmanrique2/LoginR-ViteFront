@@ -63,38 +63,24 @@ function App() {
         }
     }
 
-    useEffect(() => {
-        async function validar() {
-            try {
-                const peticion = await fetch(`${BASE_URL}/validar`, { credentials: 'include' });
-                if (peticion.ok) {
-                    const datos = await peticion.json();
-                    if (datos.logueado) {
-                        setLogueado(true);
-                        setRol(datos.rol);
-                        if (datos.rol === 'ADMINISTRADOR') obtenerUsuarios();
-                    }
-                }
-            } catch (error) {
-                console.error("Error al validar sesión:", error);
-            }
-        }
-        validar();
-    }, []);
+    async function cerrarSesion() {
+        await fetch(`${BASE_URL}/logout`, {
+            method: 'POST',
+            credentials: 'include'
+        });
+        setLogueado(false);
+        setRol('');
+    }
 
     return (
         <main className="container">
-            <img width="50" src="https://img.freepik.com/vector-gratis/vector-degradado-logotipo-colorido-pajaro_343694-1365.jpg" alt="Logo" />
-            <label>
-                ¿Eres administrador?
-                <input
-                    type="checkbox"
-                    checked={rol === 'ADMINISTRADOR'}
-                    onChange={(e) => setRol(e.target.checked ? 'ADMINISTRADOR' : '')}
-                />
-            </label>
-            {!logueado ? (
+            {logueado && (
+                <button style={{ position: "absolute", top: 10, right: 10 }} onClick={cerrarSesion}>
+                    Cerrar Sesión
+                </button>
+            )}
 
+            {!logueado ? (
                 <section>
                     <h1>Conversor TTS y STT</h1>
                     <h3>Ingresar</h3>
